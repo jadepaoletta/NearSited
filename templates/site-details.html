@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    From Flickr: 
+    {{place.name}}
+    <ul>
+    {%for photo in photos %}
+        <li>
+            <img src="{{photo.attrib['url_m']}}">
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

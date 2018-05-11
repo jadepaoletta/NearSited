@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<!--     <ul>
+    {% for place in places %}
+        {% if place.photos %}
+            <li>
+                <a href="/sites/{{place.place_id}}">{{place.name}}</a>: 
+                <img src="{{place.photos[0].url}}">
+            </li>
+        {% endif %}
+
+    {% endfor %}
+    </ul> -->
+
+    <ul>
+    {% for place in places %}
+        {% if place['photos'] %}
+            <li>
+                <a href="/sites/{{place['place_id']}}">{{place['name']}}</a>: 
+<!--                 <img src="{{place['photos'][0]['url']}}">
+ -->            </li>
+        {% endif %}
+
+    {% endfor %}
+    </ul>
+</body>
+</html>

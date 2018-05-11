@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    From Google: 
+    {{place.name}}
+    <ul>
+    {%for photo in photos %}
+        <li>
+            <img src="{{photo.url}}">
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

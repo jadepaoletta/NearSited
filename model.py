@@ -16,6 +16,7 @@ class User(db.Model):
     fname = db.Column(db.String(25), nullable=False)
     lname = db.Column(db.String(25), nullable=False)
     email = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(50), nullable=False)
     phone = db.Column(db.String(15), nullable=False)
 
     # Define relationship to trip
@@ -33,11 +34,6 @@ class User(db.Model):
                                 backref=db.backref("users",
                                                     order_by=user_id))
 
-    # Define relationship to friend
-    friend = db.relationship("Friend",
-                                backref=db.backref("users",
-                                                    order_by=user_id))
-
     def __repr__(self):
         """Returns the id and name of the User object"""
 
@@ -52,6 +48,12 @@ class Friend(db.Model):
     relationship_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     friend_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+
+    # Define relationship to primary user friend
+    primary_friend = db.relationship("User", foreign_keys=[user_id])
+    
+    # Define relationship to secondary user friend
+    secondary_friend = db.relationship("User", foreign_keys=[friend_id])
 
     def __repr__(self):
         """Returns the id and name of the User object"""
@@ -135,6 +137,28 @@ class Favorite(db.Model):
         """Returns details of the Site object"""
 
         return "< user: {} site: {}>".format(self.user_id, self.site_id)
+
+
+##############################################################################
+# Helper functions
+
+def connect_to_db(app):
+    """Connect the database to our Flask app."""
+
+    # Configure to use our PstgreSQL database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///nearsited'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.app = app
+    db.init_app(app)
+
+
+if __name__ == "__main__":
+    # As a convenience, if we run this module interactively, it will leave
+    # you in a state of being able to work with the database directly.
+
+    from server import app
+    connect_to_db(app)
+    print "Connected to DB."
 
 
 
