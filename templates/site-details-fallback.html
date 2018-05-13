@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+
     From Google: 
     {{place.name}}
     <ul>
@@ -13,5 +10,5 @@
         </li>
     {% endfor %}
     </ul>
-</body>
-</html>
+
+{% endblock %}

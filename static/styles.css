@@ -1,0 +1,22 @@
+/*.carousel-item img {
+  max-width: 600px;
+  max-height: 350px;
+}
+*/
+.carousel {
+    width: 600px !important;
+    height: 350px !important;
+}
+
+.carousel-inner {
+    width: 600px !important;
+    height: 350px !important;
+}
+
+.login{
+    width: 205px !important;
+}
+
+#login-form{
+    margin: 2%;
+}

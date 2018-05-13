@@ -1,17 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+
     From Flickr: 
     {{place.name}}
-    <ul>
-    {%for photo in photos %}
-        <li>
-            <img src="{{photo.attrib['url_m']}}">
-        </li>
-    {% endfor %}
-    </ul>
-</body>
-</html>
+
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        {%for photo in photos %}
+        <div class="carousel-item {% if loop.index == 1 %} active{% endif %}">
+          <img class="d-block w-100" src="{{photo.attrib['url_m']}}">
+        </div>
+        {% endfor %}
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+        // $('.carousel').carousel({interval: 4000});
+        // $('.carousel').carousel('cycle');
+    </script>
+
+{% endblock %}

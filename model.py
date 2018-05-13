@@ -16,7 +16,7 @@ class User(db.Model):
     fname = db.Column(db.String(25), nullable=False)
     lname = db.Column(db.String(25), nullable=False)
     email = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(60), nullable=False)
     phone = db.Column(db.String(15), nullable=False)
 
     # Define relationship to trip

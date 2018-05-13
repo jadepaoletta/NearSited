@@ -1,18 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
 
-    <ul>
-    {% for place in places %}
-        <li>
-            <a href="/sites/{{place[0]['place_id']}}">{{place[0]['name']}}</a>: 
-            <img src="{{place[1]}}">
-        </li>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for place in places %}
+        <tr>
+          <th scope="row">{{loop.index}}</th>    
+            <td>
+                <img src="{{place[1]}}">
+            </td>
+          <td>
+              <a href="/sites/{{place[0]['place_id']}}">{{place[0]['name']}}</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
 
-    {% endfor %}
-    </ul>
-</body>
-</html>
+{% endblock %}
