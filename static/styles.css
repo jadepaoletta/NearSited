@@ -20,3 +20,7 @@
 #login-form{
     margin: 2%;
 }
+
+#flash-message{
+    color: red !important;
+}
