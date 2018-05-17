@@ -21,6 +21,30 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
+
+<button id="favorite-site">favorite</button>
+    <div id="success-message"></div>
+
+<script type="text/javascript">
+
+  function showFavoriteSuccess(result){
+    $('#success-message').text(result)
+  }
+
+  function favoriteSite(evt){
+
+    var formInput = {
+      'path' : window.location.pathname.slice(7)
+    }
+
+    $.post('/favorite',
+          formInput, 
+          showFavoriteSuccess);
+
+  }
+
+  $('#favorite-site').on("click", favoriteSite);
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript">
         // $('.carousel').carousel({interval: 4000});

@@ -1,8 +1,10 @@
-/*.carousel-item img {
-  max-width: 600px;
-  max-height: 350px;
+.carousel-item img {
+    width: auto !important;
+    height: 350px;
+    max-height: 350px;
+    margin: auto !important;
 }
-*/
+
 .carousel {
     width: 600px !important;
     height: 350px !important;
@@ -24,3 +26,4 @@
 #flash-message{
     color: red !important;
 }
+
