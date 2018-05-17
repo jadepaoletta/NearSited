@@ -22,8 +22,10 @@
       </a>
     </div>
 
-<button id="favorite-site">favorite</button>
+  {% if 'user_id' in session %}
+    <button id="favorite-site">favorite</button>
     <div id="success-message"></div>
+  {% endif %}
 
 <script type="text/javascript">
 
