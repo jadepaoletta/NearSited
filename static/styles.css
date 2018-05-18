@@ -1,18 +1,18 @@
 .carousel-item img {
     width: auto !important;
-    height: 350px;
-    max-height: 350px;
+    height: 500px;
+    max-height: 500px;
     margin: auto !important;
 }
 
 .carousel {
-    width: 600px !important;
-    height: 350px !important;
+    width: 800px !important;
+    height: 500px !important;
 }
 
 .carousel-inner {
-    width: 600px !important;
-    height: 350px !important;
+    width: 800px !important;
+    height: 500px !important;
 }
 
 .login{
@@ -27,3 +27,12 @@
     color: red !important;
 }
 
+#map {
+    height: 400px;
+    width: 400px;
+    margin: 2%;
+}
+
+#favorite-site{
+    margin: 2%;
+}

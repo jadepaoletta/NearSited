@@ -5,4 +5,19 @@
     Hello, welcome to NearSited. 
 </h2>
 
+{% if favorites %}
+<div>
+    <h4>Your Favorite Sites</h4>
+    <ul>
+    {% for favorite in favorites %}
+        <li>
+            <a href="/sites/{{favorite.site_id}}">{{favorite.name}}</a>
+        </li>
+    {% endfor %}
+    </ul>    
+
+</div>
+
+{% endif %}
+
 {% endblock %}
