@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>{{trip.date.strftime("%A, %B %d")}}</div>
+
+    {% if trip.trip_attendees %}
+    <div>{{trip.trip_attendees[0].users.fname}} {{trip.trip_attendees[0].users.lname}}</div>
+    {% endif %}
+
+    <button id="cancel-trip">Cancel</button>
+
+    <div id="success-message"></div>
+
+
+<script type="text/javascript">
+
+    function showCancelSuccess(result){
+        $('#success-message').text(result);
+    }
+    
+
+    function cancelTrip(evt){
+        evt.preventDefault(); 
+        window.alert("Are you sure you want to cancel this trip?"); 
+
+        var formInput = {
+          'path' : window.location.pathname.slice(14)
+        }
+
+        $.post('/cancel-trip',
+              formInput, 
+              showCancelSuccess);
+
+    }
+
+
+    $("#cancel-trip").on("click", cancelTrip);
+</script>
+
+
+
+{% endblock %}
