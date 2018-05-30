@@ -1,17 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>{{trip.date.strftime("%A, %B %d")}}</div>
+<h2>Trip Details:</h2>
+<img src="{{trip.site.thumbnail}}">
+<div>Site name: <a href="/sites/{{trip.site_id}}">{{trip.site.name}}</a></div>
+<div>Date: {{trip.date.strftime("%A, %B %d")}}</div>
+<div>Organizer: {{trip.users.fname}} {{trip.users.lname}}</div>
 
     {% if trip.trip_attendees %}
-    <div>{{trip.trip_attendees[0].users.fname}} {{trip.trip_attendees[0].users.lname}}</div>
+    <div>Attendees: {{trip.trip_attendees[0].users.fname}} {{trip.trip_attendees[0].users.lname}}</div>
     {% endif %}
 
-    <button id="cancel-trip">Cancel</button>
+<button id="cancel-trip">Cancel</button>
 
-    <div id="success-message"></div>
+<div id="success-message"></div>
+
+<div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: {{trip.site.lat}}, lng: {{trip.site.lng}}};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+     
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap">
+    </script>
 
 
-<script type="text/javascript">
+
+<!-- <script type="text/javascript">
 
     function showCancelSuccess(result){
         $('#success-message').text(result);
@@ -34,7 +58,7 @@
 
 
     $("#cancel-trip").on("click", cancelTrip);
-</script>
+</script> -->
 
 
 

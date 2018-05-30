@@ -31,17 +31,6 @@
           <li class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
 
         </ul>
         <form class="form-inline my-2 my-lg-0" action="/sites">
@@ -60,4 +49,72 @@
 
     {% block content %} put your content here {% endblock %}
 </body>
+
+  <script type="text/javascript">
+    // Javascript for the site details page
+
+
+    function showFavoriteSuccess(result){
+    $('#success-message').text(result)
+    }
+
+    function favoriteSite(evt){
+
+    var formInput = {
+      'path' : window.location.pathname.slice(7)
+    }
+
+    $.post('/favorite',
+          formInput, 
+          showFavoriteSuccess);
+
+    }
+
+    function showTripSuccess(result){
+    $('#trip-success').text(result)
+    }
+
+    function scheduleTrip(evt){
+
+    var formInputs = {
+        "date": $("#datepicker").val(),
+        "email": $("#attendee-email").val(),
+        'path' : window.location.pathname.slice(7)
+    };
+
+    $.post("/trip", 
+         formInputs,
+         showTripSuccess);
+
+    }
+
+    $('#trip-submit').on("click", scheduleTrip);
+    $('#favorite-site').on("click", favoriteSite);
+
+
+
+    // Javascript for the trip details page
+
+    function showCancelSuccess(result){
+        $('#success-message').text(result);
+    }
+
+
+    function cancelTrip(evt){
+        evt.preventDefault(); 
+        window.alert("Are you sure you want to cancel this trip?"); 
+
+        var formInput = {
+          'path' : window.location.pathname.slice(14)
+        }
+
+        $.post('/cancel-trip',
+              formInput, 
+              showCancelSuccess);
+
+    }
+
+
+    $("#cancel-trip").on("click", cancelTrip);
+  </script>
 </html>

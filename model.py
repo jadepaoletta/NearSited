@@ -84,7 +84,7 @@ class Trip(db.Model):
     def __repr__(self):
         """Returns details of the Trip object"""
 
-        return "< trip to site: {} at: {} by user {}>".format(self.site_id, self.date, self.user_id)
+        return "< trip to site: {} at: {} by user {}>".format(self.site_id, self.date, self.owner_id)
 
 
 class Attendee(db.Model):

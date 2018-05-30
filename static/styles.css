@@ -36,3 +36,22 @@
 #favorite-site{
     margin: 2%;
 }
+
+#schedule-trip{
+    margin: 2%;
+}
+
+.headline{
+    margin: auto;
+    margin-top: 20%;
+    text-align: center;
+    z-index: 1;
+}
+
+/*#background{
+    width: 100%;
+    height: auto;
+    z-index: 0;
+}*/
+
+
