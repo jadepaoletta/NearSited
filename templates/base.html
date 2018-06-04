@@ -23,6 +23,12 @@
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
+            <a class="nav-link" href="/profile/{{session['user_id']}}">Profile <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/add-friend">Add Friends <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
             <a class="nav-link" href="/register">Register <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
@@ -70,26 +76,62 @@
 
     }
 
+
+// Trip scheduling code
+
     function showTripSuccess(result){
     $('#trip-success').text(result)
     }
 
+
     function scheduleTrip(evt){
+
+    var email_list = getAttendeeEmails();
+    console.log(email_list);
 
     var formInputs = {
         "date": $("#datepicker").val(),
-        "email": $("#attendee-email").val(),
-        'path' : window.location.pathname.slice(7)
+        "email": $(".attendee-email").val(),
+        "path" : window.location.pathname.slice(7),
+        "email_list": email_list
+
     };
+
+    console.log(formInputs);
 
     $.post("/trip", 
          formInputs,
-         showTripSuccess);
-
+         showTripSuccess, "json");
+    
+    console.log("hi");
     }
 
     $('#trip-submit').on("click", scheduleTrip);
     $('#favorite-site').on("click", favoriteSite);
+
+
+
+
+
+
+    function addAttendeeField(){
+      var linebreak = document.createElement('br')
+      var attendeeEntry = document.createElement('input', {class:"attendee-email", type:"text", name:"email"})
+      document.getElementById("attendees").appendChild(linebreak)
+      document.getElementById("attendees").appendChild(attendeeEntry)
+    }
+
+    function getAttendeeEmails(){
+      var emailList = [];
+      attendees = $("#attendees input");
+
+      for (i=0; i<attendees.length; i++){
+        emailList.push(attendees[i].value);
+      }
+      return emailList;
+    }
+
+    $('#add-user').on("click", addAttendeeField);
 
 
 
