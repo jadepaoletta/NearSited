@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if favorites %}
+    <div>
+        <h4>Your Favorite Sites</h4>
+        <ul>
+        {% for favorite in favorites %}
+            <li>
+                <a href="/sites/{{favorite.site_id}}">{{favorite.name}}</a>
+            </li>
+        {% endfor %}
+        </ul>    
+
+    </div>
+
+    {% endif %}
+
+    {% if trips %}
+    <div>
+        <h4>Your Upcoming Trips</h4>
+        <ul>
+        {% for trip in trips %}
+            <li>
+                {{trip[0].date.strftime("%A, %B %d")}} <a href="/trip-details/{{trip[0].trip_id}}">{{trip[1].name}}</a>
+            </li>
+        {% endfor %}
+        </ul>    
+
+    </div>
+
+    {% endif %}
+
+    {% if friends %}
+    <div>
+        <h4>Your Friends</h4>
+        <ul>
+        {% for friend in friends %}
+            <li>
+                {{friend.fname}} {{friend.lname}}
+            </li>    
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <div>Add friends here so you can invite them on furture trips with you! To add a friend, search their email in the field below and click "Add Friend"</div>
+
+    <input type="text" name="friend" id="friend">
+    <button name="add-friend" id="add-friend">Add Friend</button>
+    <div id="friend-success"></div>
+
+    <script type="text/javascript">
+
+        function showFriendSuccess(result){
+            $('#friend-success').text(result);
+        }
+
+        function addFriend(evt){
+
+        var formInput = {
+          'friend' : $("#friend").val()
+        }
+
+        $.post('/add-friend',
+              formInput, 
+              showFriendSuccess);
+        }
+        
+
+        $("#add-friend").on("click", addFriend);
+    </script>
+
+{% endblock %}

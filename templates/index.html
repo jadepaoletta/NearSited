@@ -16,35 +16,4 @@
 
 
 
-
-{% if favorites %}
-<div>
-    <h4>Your Favorite Sites</h4>
-    <ul>
-    {% for favorite in favorites %}
-        <li>
-            <a href="/sites/{{favorite.site_id}}">{{favorite.name}}</a>
-        </li>
-    {% endfor %}
-    </ul>    
-
-</div>
-
-{% endif %}
-
-{% if trips %}
-<div>
-    <h4>Your Upcoming Trips</h4>
-    <ul>
-    {% for trip in trips %}
-        <li>
-            {{trip[0].date.strftime("%A, %B %d")}} <a href="/trip-details/{{trip[0].trip_id}}">{{trip[1].name}}</a>
-        </li>
-    {% endfor %}
-    </ul>    
-
-</div>
-
-{% endif %}
-
 {% endblock %}

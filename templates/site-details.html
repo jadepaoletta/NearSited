@@ -1,11 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h3>Site: {{place.name}}</h3>
-    <div>
-      Address: {{place.address}}
-    </div>
-
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
         {%for photo in photos %}
@@ -24,9 +19,14 @@
       </a>
     </div>
 
+    <h3>Site: {{place.name}}</h3>
+    <div>
+      Address: {{place.address}}
+    </div>
+
   {% if 'user_id' in session %}
     <button id="favorite-site">favorite</button>
-    <div id="success-message"></div>
+    <div id="success-message" class="alert-success"></div>
   {% endif %}
 
     <div id="map"></div>
@@ -50,6 +50,7 @@
 
 <div id="schedule-trip">
   <h3>Schedule a Trip</h3>
+  <iframe id="forecast_embed" frameborder="0" height="245" width="100%" src="https://forecast.io/embed/#lat={{place.lat}}&lon={{place.lng}}&name={{place.name}}"></iframe>
   <label>Select a date:</label>
     <input id="datepicker" width="276" name="date" />
     <script>
@@ -57,58 +58,54 @@
             uiLibrary: 'bootstrap4'
         });
     </script>
-    <label>Invite a friend (enter email addresses, separated by commas):</label>
+<!--     <label>Invite a friend (enter email addresses, separated by commas):</label>
     <br>
     <div id="attendees">
       <input class="attendee-email" type="text" name="email">
     </div>
     <button id="add-user">Add User</button>
+    <br> -->
     <br>
-    <br>
+    <div id="trip-success" class="alert-success"></div>
+    <div id="attendees">
+      <select class="mdb-select" multiple>
+        <!-- <option value="" disabled selected>Invite Friends</option> -->
+        {% for friend in friends %}
+          <option value="{{friend.email}}">{{friend.fname}} {{friend.lname}}</option>
+        {% endfor %}
+      </select>
+    </div>
     <input id="trip-submit" type="submit" name="submit">
 
-    <div id="trip-success"></div>
+  <form method="post" enctype="multipart/form-data" action="/upload-photo">
+    <input type="file" name="image" id="image">
+    <input type="hidden" id="site_id" name="site_id" value="{{place.site_id}}">
+    <input type="submit" value="Upload your image" class="btn" id="image-submit">
+  </form>
 
 </div>
 
 <!-- <script type="text/javascript">
 
-  function showFavoriteSuccess(result){
-    $('#success-message').text(result)
+ function showUploadSuccess(result){
+   console.log(result);
+ }
+  
+  function testLogging(evt){
+    evt.preventDefault();
+
+    var formData = new FormData();
+
+    formData.append("site_id", window.location.pathname.slice(7))
+    formData.append("image", $('#image')[0].files[0], "image")
+
+    
+    $.post("/upload-photo", 
+     formData,
+     showUploadSuccess);
   }
 
-  function favoriteSite(evt){
-
-    var formInput = {
-      'path' : window.location.pathname.slice(7)
-    }
-
-    $.post('/favorite',
-          formInput, 
-          showFavoriteSuccess);
-
-  }
-
-  function showTripSuccess(result){
-    $('#trip-success').text(result)
-  }
-
-  function scheduleTrip(evt){
-
-    var formInputs = {
-        "date": $("#datepicker").val(),
-        "email": $("#attendee-email").val(),
-        'path' : window.location.pathname.slice(7)
-    };
-
-    $.post("/trip", 
-         formInputs,
-         showTripSuccess);
-
-  }
-
-  $('#trip-submit').on("click", scheduleTrip);
-  $('#favorite-site').on("click", favoriteSite);
+  $('#image-submit').on('click', testLogging);
 </script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript">

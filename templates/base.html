@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="/">NearSited</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -26,7 +26,7 @@
             <a class="nav-link" href="/profile/{{session['user_id']}}">Profile <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="/add-friend">Add Friends <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="/register">Register <span class="sr-only">(current)</span></a>
@@ -61,7 +61,7 @@
 
 
     function showFavoriteSuccess(result){
-    $('#success-message').text(result)
+      $('#success-message').text(result);
     }
 
     function favoriteSite(evt){
@@ -80,7 +80,8 @@
 // Trip scheduling code
 
     function showTripSuccess(result){
-    $('#trip-success').text(result)
+      console.log(result);
+      $('#trip-success').text(result); 
     }
 
 
@@ -91,7 +92,6 @@
 
     var formInputs = {
         "date": $("#datepicker").val(),
-        "email": $(".attendee-email").val(),
         "path" : window.location.pathname.slice(7),
         "email_list": email_list
 
@@ -101,7 +101,7 @@
 
     $.post("/trip", 
          formInputs,
-         showTripSuccess, "json");
+         showTripSuccess);
     
     console.log("hi");
     }
@@ -123,10 +123,12 @@
 
     function getAttendeeEmails(){
       var emailList = [];
-      attendees = $("#attendees input");
+      attendees = $('.mdb-select option');
 
       for (i=0; i<attendees.length; i++){
-        emailList.push(attendees[i].value);
+        if (attendees[i].selected){
+          emailList.push(attendees[i].value);
+        }
       }
       return emailList;
     }

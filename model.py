@@ -18,6 +18,7 @@ class User(db.Model):
     email = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(60), nullable=False)
     phone = db.Column(db.String(15), nullable=False)
+    photo = db.Column(db.LargeBinary, nullable=True)
 
     # Define relationship to trip
     trip = db.relationship("Trip",
@@ -137,6 +138,50 @@ class Favorite(db.Model):
         """Returns details of the Site object"""
 
         return "< user: {} site: {}>".format(self.user_id, self.site_id)
+
+
+class Photo(db.Model):
+    """Photo in NearSited website."""
+
+    __tablename__ = "photos"
+
+    photo_id = db.Column(db.Integer, primary_key=True)
+    photo_blob = db.Column(db.LargeBinary, nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    site_id = db.Column(db.String(100), db.ForeignKey('sites.site_id'), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+
+    user = db.relationship("User", 
+                            backref=db.backref("photos", order_by=photo_id))
+
+    site = db.relationship("Site", 
+                            backref=db.backref("photos", order_by=photo_id))
+
+    def __repr__(self):
+        """Returns details of photo."""
+
+        return "< photo added by user: {} on site: {}>".format(self.user_id, self.site_id)
+
+
+class Comment(db.Model):
+    """Comment on a site in NearSited website."""
+
+    __tablename__ = "comments"
+
+    comment_id = db.Column(db.Integer, primary_key=True)
+    comment_string = db.Column(db.String(500), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    site_id = db.Column(db.String(100), db.ForeignKey('sites.site_id'), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+
+    user = db.relationship("User", 
+                            backref=db.backref("comments", order_by=comment_id))
+
+    site = db.relationship("Site", 
+                            backref=db.backref("comments", order_by=comment_id))
+
+
+
 
 
 ##############################################################################
