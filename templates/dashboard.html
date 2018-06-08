@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
+
+    <div>
+        <h2>Welcome, {{user.fname}}</h2>
+    </div>
+    {% if profile_photo %}
+        <img src="data:image/png;base64,{{profile_photo}}" id="profile-photo">
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" action="/upload-profile-photo">
+        <input type="file" name="image" id="image">
+        <input type="submit" value="Upload a Profile Photo" id="image-submit">
+    </form>
     {% if favorites %}
     <div>
         <h4>Your Favorite Sites</h4>

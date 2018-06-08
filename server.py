@@ -184,6 +184,7 @@ def dashboard_view():
         favorites = Favorite.query.filter_by(user_id=session['user_id']).all()
         trips = Trip.query.filter_by(owner_id=session['user_id']).all()
         friends = Friend.query.filter_by(user_id=session['user_id']).all()
+        user = User.query.filter_by(user_id=session['user_id']).first()
 
         for favorite in favorites:
             fav_site = Site.query.filter_by(site_id=favorite.site_id).first()
@@ -198,9 +199,11 @@ def dashboard_view():
             current_friend = User.query.filter_by(user_id=friend.friend_id).first()
             user_friends.append(current_friend)
 
+        if user.photo:
+            profile_photo = base64.b64encode(user.photo) 
+            return render_template('dashboard.html', favorites=user_favorites, trips=user_trips, friends=user_friends, profile_photo=profile_photo, user=user)
 
-
-    return render_template('dashboard.html', favorites=user_favorites, trips=user_trips, friends=user_friends)
+    return render_template('dashboard.html', favorites=user_favorites, trips=user_trips, friends=user_friends, user=user)
 
 
 @app.route('/add-friend', methods=['POST'])
@@ -338,6 +341,17 @@ def upload_photo():
 
     return redirect('/sites/{}'.format(site_id))
 
+
+@app.route('/upload-profile-photo', methods=['POST'])
+def upload_profile_photo():
+
+    file = request.files['image']
+
+    user = User.query.filter_by(user_id=session['user_id']).first()
+    user.photo = file.read()
+    db.session.commit()
+
+    return redirect('/dashboard')
 
 
 if __name__ == "__main__":
