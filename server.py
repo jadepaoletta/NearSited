@@ -10,6 +10,7 @@ from helper import search_by_text, get_thumnail_url, send_trip_invite, cancel_tr
 import datetime
 import requests
 from flask.ext.emails import Message
+import base64
 
 
 app = Flask(__name__)
@@ -156,7 +157,11 @@ def sites_details(place_id):
         current_friend = User.query.filter_by(user_id=friend.friend_id).first()
         user_friends.append(current_friend)
 
-    return render_template("site-details.html", place=place, photos=large_photos, api_key=GOOGLE_API_KEY, friends=user_friends)
+    uploaded_photos = Photo.query.filter_by(site_id=place_id).all()
+
+    encoded_photos = [base64.b64encode(u_photo.photo_blob) for u_photo in uploaded_photos]
+
+    return render_template("site-details.html", place=place, photos=large_photos, api_key=GOOGLE_API_KEY, friends=user_friends, u_photos=encoded_photos)
 
 @app.route('/profile/<user_id>')
 def user_profile(user_id):
