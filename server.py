@@ -161,7 +161,14 @@ def sites_details(place_id):
 
     encoded_photos = [base64.b64encode(u_photo.photo_blob) for u_photo in uploaded_photos]
 
-    return render_template("site-details.html", place=place, photos=large_photos, api_key=GOOGLE_API_KEY, friends=user_friends, u_photos=encoded_photos)
+    comments = Comment.query.filter_by(site_id=place_id).all()
+
+    user_comments = []
+    for comment in comments:
+        user_comments.append([base64.b64encode(comment.user.photo), comment])
+
+    return render_template("site-details.html", place=place, photos=large_photos, 
+        api_key=GOOGLE_API_KEY, friends=user_friends, u_photos=encoded_photos, comments=user_comments)
 
 @app.route('/profile/<user_id>')
 def user_profile(user_id):
@@ -352,6 +359,22 @@ def upload_profile_photo():
     db.session.commit()
 
     return redirect('/dashboard')
+
+@app.route('/post-comment', methods=['POST'])
+def post_comment():
+
+    comment = request.form['comment']
+    site_id = request.form['site_id']
+
+    print comment
+
+    new_comment = Comment(comment_string=comment, user_id=session['user_id'], site_id=site_id, date=datetime.datetime.today().date())
+
+    db.session.add(new_comment)
+    db.session.commit()
+
+    return "Thanks for your comment!"
+
 
 
 if __name__ == "__main__":

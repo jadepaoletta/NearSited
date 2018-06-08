@@ -27,99 +27,129 @@
       </a>
     </div>
 
-    <h3>Site: {{place.name}}</h3>
-    <div>
-      Address: {{place.address}}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h3>Site: {{place.name}}</h3>
+        <div>
+          Address: {{place.address}}
+        </div>
+        {% if 'user_id' in session %}
+        <button id="favorite-site">favorite</button>
+        <div id="success-message" class="alert-success"></div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" action="/upload-photo">
+          <input type="file" name="image" id="image">
+          <input type="hidden" id="site_id" name="site_id" value="{{place.site_id}}">
+          <input type="submit" value="Upload your image" class="btn" id="image-submit">
+        </form>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Leave a Comment:</label>
+            <textarea class="form-control" rows="3" id="comment"></textarea>
+            <button id="comment-submit">Comment</button>
+          </div>
+        </div>
+        {% if comments %}
+        <ul class="list-unstyled">
+          {% for comment in comments %}
+          <li class="media">
+            <img class="mr-3" src="data:image/png;base64,{{comment[0]}}" alt="Generic placeholder image" id="comment-img">
+            <div class="media-body">
+              <h5 class="mt-0 mb-1">{{comment[1].user.fname}} {{comment[1].user.lname}}</h5>
+              {{comment[1].comment_string}}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+
+      <div class="col">
+
+        <iframe id="forecast_embed" frameborder="0" height="245" width="100%" src="https://forecast.io/embed/#lat={{place.lat}}&lon={{place.lng}}&name={{place.name}}"></iframe>
+
+        <div id="schedule-trip">
+          <h3>Schedule a Trip</h3>
+          <label>Select a date:</label>
+            <input id="datepicker" width="276" name="date" />
+            <script>
+                $('#datepicker').datepicker({
+                    uiLibrary: 'bootstrap4'
+                });
+            </script>
+
+            <br>
+            <div id="trip-success" class="alert-success"></div>
+            <div id="attendees">
+              <div>Invite Friends:</div>
+              <select class="mdb-select" multiple>
+                {% for friend in friends %}
+                  <option value="{{friend.email}}">{{friend.fname}} {{friend.lname}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <input id="trip-submit" type="submit" name="submit">
+        </div>
+
+        <div id="map"></div>
+        <script>
+          function initMap() {
+            var uluru = {lat: {{place.lat}}, lng: {{place.lng}}};
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 12,
+              center: uluru
+            });
+            var marker = new google.maps.Marker({
+              position: uluru,
+              map: map
+            });
+          }
+         
+        </script>
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap">
+        </script>
+      </div>
+      <div class="w-100"></div>
     </div>
+  </div>
 
-  {% if 'user_id' in session %}
-    <button id="favorite-site">favorite</button>
-    <div id="success-message" class="alert-success"></div>
-  {% endif %}
+<script type="text/javascript">
 
-    <div id="map"></div>
-    <script>
-      function initMap() {
-        var uluru = {lat: {{place.lat}}, lng: {{place.lng}}};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 12,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
-      }
-     
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap">
-    </script>
-
-<div id="schedule-trip">
-  <h3>Schedule a Trip</h3>
-  <iframe id="forecast_embed" frameborder="0" height="245" width="100%" src="https://forecast.io/embed/#lat={{place.lat}}&lon={{place.lng}}&name={{place.name}}"></iframe>
-  <label>Select a date:</label>
-    <input id="datepicker" width="276" name="date" />
-    <script>
-        $('#datepicker').datepicker({
-            uiLibrary: 'bootstrap4'
-        });
-    </script>
-<!--     <label>Invite a friend (enter email addresses, separated by commas):</label>
-    <br>
-    <div id="attendees">
-      <input class="attendee-email" type="text" name="email">
-    </div>
-    <button id="add-user">Add User</button>
-    <br> -->
-    <br>
-    <div id="trip-success" class="alert-success"></div>
-    <div id="attendees">
-      <select class="mdb-select" multiple>
-        <!-- <option value="" disabled selected>Invite Friends</option> -->
-        {% for friend in friends %}
-          <option value="{{friend.email}}">{{friend.fname}} {{friend.lname}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <input id="trip-submit" type="submit" name="submit">
-
-  <form method="post" enctype="multipart/form-data" action="/upload-photo">
-    <input type="file" name="image" id="image">
-    <input type="hidden" id="site_id" name="site_id" value="{{place.site_id}}">
-    <input type="submit" value="Upload your image" class="btn" id="image-submit">
-  </form>
-
-</div>
+    function showCommentSuccess(result){
+      console.log(result);
+    }
 
 
-<!-- <script type="text/javascript">
+    function postComment(evt){
 
- function showUploadSuccess(result){
-   console.log(result);
- }
-  
-  function testLogging(evt){
-    evt.preventDefault();
+    var formInputs = {
+        "comment": $("#comment").val(),
+        "site_id" : window.location.pathname.slice(7)
 
-    var formData = new FormData();
+    };
 
-    formData.append("site_id", window.location.pathname.slice(7))
-    formData.append("image", $('#image')[0].files[0], "image")
-
+    $.post("/post-comment", 
+         formInputs,
+         showCommentSuccess);
     
-    $.post("/upload-photo", 
-     formData,
-     showUploadSuccess);
-  }
+    }
 
-  $('#image-submit').on('click', testLogging);
-</script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript">
-        // $('.carousel').carousel({interval: 4000});
-        // $('.carousel').carousel('cycle');
-    </script>
+    $('#comment-submit').on("click", postComment);
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+    // $('.carousel').carousel({interval: 4000});
+    // $('.carousel').carousel('cycle');
+</script>
+
+
+
 
 {% endblock %}

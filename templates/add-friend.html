@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div>Add friends here so you can invite them on furture trips with you! To add a friend, search their email in the field below and click "Add Friend"</div>
+
+    <input type="text" name="friend" id="friend">
+    <button name="add-friend" id="add-friend">Add Friend</button>
+    <div id="friend-success"></div>
+
+    <script type="text/javascript">
+
+        function showFriendSuccess(result){
+            $('#friend-success').text(result);
+        }
+
+        function addFriend(evt){
+
+        var formInput = {
+          'friend' : $("#friend").val()
+        }
+
+        $.post('/add-friend',
+              formInput, 
+              showFriendSuccess);
+        }
+        
+
+        $("#add-friend").on("click", addFriend);
+    </script>
+
+{% endblock %}
