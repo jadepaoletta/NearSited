@@ -92,6 +92,8 @@
                 {% endfor %}
               </select>
             </div>
+            <label for="exampleFormControlTextarea1">Send a message to attendees (optional):</label>
+            <textarea class="form-control" rows="3" id="message"></textarea>
             <input id="trip-submit" type="submit" name="submit">
         </div>
 
@@ -107,7 +109,11 @@
               position: uluru,
               map: map
             });
-          }
+            
+
+            }
+
+
          
         </script>
         <script async defer
@@ -117,31 +123,30 @@
       <div class="w-100"></div>
     </div>
   </div>
+<!-- <script type="text/javascript">
+//Commenting functionality
 
-<script type="text/javascript">
-
-    function showCommentSuccess(result){
-      console.log(result);
-    }
+function showCommentSuccess(result){
+  console.log(result);
+}
 
 
-    function postComment(evt){
+function postComment(evt){
+  console.log("1");
+  var formInputs = {
+      "comment": $("#comment").val(),
+      "site_id" : window.location.pathname.slice(7)
 
-    var formInputs = {
-        "comment": $("#comment").val(),
-        "site_id" : window.location.pathname.slice(7)
+  };
 
-    };
+  $.post("/post-comment", 
+       formInputs,
+       showCommentSuccess);
 
-    $.post("/post-comment", 
-         formInputs,
-         showCommentSuccess);
-    
-    }
+}
 
-    $('#comment-submit').on("click", postComment);
-
-</script>
+$('#comment-submit').on("click", postComment);
+</script> -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">

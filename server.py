@@ -1,15 +1,13 @@
 from flask import (Flask, render_template, redirect, request, flash, session, jsonify)
 from model import User, Friend, Trip, Attendee, Site, Favorite, Photo, Comment, connect_to_db, db
-from flask.ext.uploads import UploadSet, configure_uploads, IMAGES
+from helper import search_by_text, get_thumnail_url, send_trip_invite, cancel_trip, get_site_photos
 from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 import os
 import bcrypt
 import flickrapi
-from helper import search_by_text, get_thumnail_url, send_trip_invite, cancel_trip
 import datetime
 import requests
-from flask.ext.emails import Message
 import base64
 
 
@@ -104,7 +102,6 @@ def sites_list():
 
     user_location = request.args.get('search')
     places = search_by_text(user_location)
-    print places
 
     final_places = []
 
@@ -131,24 +128,17 @@ def sites_list():
     if not final_places:
         flash("Sorry, no results were found for your search! Please try again")
 
-    return render_template("sites.html", places=final_places)
+    return render_template("sites.html", places=final_places, api_key=GOOGLE_API_KEY)
 
 
-@app.route('/sites/<place_id>')
-def sites_details(place_id):
+@app.route('/sites/<site_id>')
+def sites_details(site_id):
     """Returns a page displaying details about the specific site."""
 
     #get the place object from the DB
-    place = Site.query.filter_by(site_id=place_id).one()
+    place = Site.query.filter_by(site_id=site_id).one()
 
-    photos = flickr.photos.search(lat=place.lat,lon=place.lng, text=place.name,
-                                    sort='interestingness-desc', extras='url_l', format='etree')
-
-    # Gets all of the photo elements in the response
-    flickr_photos = photos.find('photos').findall('photo')
-
-    # Loop through photos to only get the large ones
-    large_photos = [photo for photo in flickr_photos if 'url_l' in photo.attrib]
+    flickr_photos = get_site_photos(place)
 
     friends = Friend.query.filter_by(user_id=session['user_id']).all()
     user_friends = []
@@ -157,18 +147,19 @@ def sites_details(place_id):
         current_friend = User.query.filter_by(user_id=friend.friend_id).first()
         user_friends.append(current_friend)
 
-    uploaded_photos = Photo.query.filter_by(site_id=place_id).all()
+    uploaded_photos = Photo.query.filter_by(site_id=site_id).all()
 
     encoded_photos = [base64.b64encode(u_photo.photo_blob) for u_photo in uploaded_photos]
 
-    comments = Comment.query.filter_by(site_id=place_id).all()
+    comments = Comment.query.filter_by(site_id=site_id).all()
 
     user_comments = []
     for comment in comments:
         user_comments.append([base64.b64encode(comment.user.photo), comment])
 
-    return render_template("site-details.html", place=place, photos=large_photos, 
+    return render_template("site-details.html", place=place, photos=flickr_photos, 
         api_key=GOOGLE_API_KEY, friends=user_friends, u_photos=encoded_photos, comments=user_comments)
+    
 
 @app.route('/profile/<user_id>')
 def user_profile(user_id):
@@ -257,13 +248,14 @@ def favorite():
 
         return "Saved to your favorites"
 
+
 @app.route('/trip', methods=['POST'])
 def trip():
+
     date = request.form['date'] 
     site_id = request.form['path']
+    message = request.form['message']
     email_list = request.form.getlist('email_list[]')
-
-    print "1"
 
     trip_date = datetime.datetime.strptime(date, "%m/%d/%Y")
 
@@ -273,9 +265,6 @@ def trip():
     else:
         new_trip = Trip(site_id=site_id, owner_id=session['user_id'], date=date)
         db.session.add(new_trip)
-        print new_trip.trip_id
-
-    print "2"
 
 
     attendees = []
@@ -284,13 +273,12 @@ def trip():
             attendee = User.query.filter_by(email=email).first()
             if attendee:
                 attendees.append(attendee)
-                send_trip_invite(new_trip, attendee)
+                send_trip_invite(new_trip, attendee, message)
                 print "sent trip invite"
             else:
                 print attendee + 'not found'
 
     db.session.commit()
-    print "committed"
 
     return "Successfully created a trip!"
 
@@ -344,7 +332,6 @@ def upload_photo():
 
     db.session.add(new_photo)
     db.session.commit()
-    print "uploaded a photo"
 
     return redirect('/sites/{}'.format(site_id))
 
@@ -360,6 +347,7 @@ def upload_profile_photo():
 
     return redirect('/dashboard')
 
+
 @app.route('/post-comment', methods=['POST'])
 def post_comment():
 
@@ -373,7 +361,7 @@ def post_comment():
     db.session.add(new_comment)
     db.session.commit()
 
-    return "Thanks for your comment!"
+    return "Thanks for your comment"
 
 
 
