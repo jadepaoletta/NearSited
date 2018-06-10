@@ -1,63 +1,182 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <div>
-        <h2>Welcome, {{user.fname}}</h2>
-    </div>
-    {% if profile_photo %}
-        <img src="data:image/png;base64,{{profile_photo}}" id="profile-photo">
-    {% endif %}
+    <!-- Page Content -->
+    <div class="container">
 
-    <form method="post" enctype="multipart/form-data" action="/upload-profile-photo">
-        <input type="file" name="image" id="image">
-        <input type="submit" value="Upload a Profile Photo" id="image-submit">
-    </form>
-    {% if favorites %}
-    <div>
-        <h4>Your Favorite Sites</h4>
-        <ul>
-        {% for favorite in favorites %}
-            <li>
-                <a href="/sites/{{favorite.site_id}}">{{favorite.name}}</a>
+      <div class="row">
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+            <h1 class="my-4">Welcome, {{user.fname}}
+            </h1>
+
+          <!-- Side Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Profile</h5>
+            <div class="card-body">
+            {% if profile_photo %}
+                <img src="data:image/png;base64,{{profile_photo}}" id="profile-photo">
+            {% endif %}
+            <form method="post" enctype="multipart/form-data" action="/upload-profile-photo">
+                <input type="file" name="image" id="image">
+                <input type="submit" value="Upload a Profile Photo" id="image-submit">
+            </form>
+            <div>{{user.fname}} {{user.lname}}</div>
+            <div>{{user.email}}</div>
+            <div>{{user.phone}}</div>
+            </div>
+          </div>
+
+
+          <!-- Favories Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Your Favorite Sites:</h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  {% if favorites %}
+                  <ul class="list-unstyled mb-0">
+                    {% for favorite in favorites %}
+                    <li>
+                        <a href="/sites/{{favorite.site_id}}">{{favorite.name}}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upcoming Trips Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Your Upcoming Trips:</h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  {% if trips %}
+                  <ul class="list-unstyled mb-0">
+                    {% for trip in trips %}
+                    <li>
+                        {{trip[0].date.strftime("%A, %B %d")}} <br>
+                        <a href="/trip-details/{{trip[0].trip_id}}">{{trip[1].name}}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upcoming Trips Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Your Friends:</h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  {% if friends %}
+                  <ul class="list-unstyled mb-0">
+                    {% for friend in friends %}
+                    <li>
+                        {{friend.fname}} {{friend.lname}}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                  <br>
+                  <br>
+                  <div>Add friends here so you can invite them on furture trips with you! To add a friend, search their email in the field below and click "Add Friend"</div>
+
+                  <input type="text" name="friend" id="friend">
+                  <button name="add-friend" id="add-friend">Add Friend</button>
+                  <div id="friend-success"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+          
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+          <h1 class="my-4">
+            <small>Your Photos</small>
+          </h1>
+
+          <!-- Blog Post -->
+          <div class="card mb-4">
+            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+            <div class="card-body">
+              <h2 class="card-title">Post Title</h2>
+              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
+              <a href="#" class="btn btn-primary">Read More &rarr;</a>
+            </div>
+            <div class="card-footer text-muted">
+              Posted on January 1, 2017 by
+              <a href="#">Start Bootstrap</a>
+            </div>
+          </div>
+
+          <!-- Blog Post -->
+          <div class="card mb-4">
+            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+            <div class="card-body">
+              <h2 class="card-title">Post Title</h2>
+              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
+              <a href="#" class="btn btn-primary">Read More &rarr;</a>
+            </div>
+            <div class="card-footer text-muted">
+              Posted on January 1, 2017 by
+              <a href="#">Start Bootstrap</a>
+            </div>
+          </div>
+
+          <!-- Blog Post -->
+          <div class="card mb-4">
+            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+            <div class="card-body">
+              <h2 class="card-title">Post Title</h2>
+              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
+              <a href="#" class="btn btn-primary">Read More &rarr;</a>
+            </div>
+            <div class="card-footer text-muted">
+              Posted on January 1, 2017 by
+              <a href="#">Start Bootstrap</a>
+            </div>
+          </div>
+
+
+          <!-- Pagination -->
+          <ul class="pagination justify-content-center mb-4">
+            <li class="page-item">
+              <a class="page-link" href="#">&larr; Older</a>
             </li>
-        {% endfor %}
-        </ul>    
-
-    </div>
-
-    {% endif %}
-
-    {% if trips %}
-    <div>
-        <h4>Your Upcoming Trips</h4>
-        <ul>
-        {% for trip in trips %}
-            <li>
-                {{trip[0].date.strftime("%A, %B %d")}} <a href="/trip-details/{{trip[0].trip_id}}">{{trip[1].name}}</a>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Newer &rarr;</a>
             </li>
-        {% endfor %}
-        </ul>    
+          </ul>
+
+        </div>
+
+        
+
+      </div>
+      <!-- /.row -->
 
     </div>
+    <!-- /.container -->
 
-    {% endif %}
-
-    {% if friends %}
-    <div>
-        <h4>Your Friends</h4>
-        <ul>
-        {% for friend in friends %}
-            <li>
-                {{friend.fname}} {{friend.lname}}
-            </li>    
-        {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-    <div>Add friends here so you can invite them on furture trips with you! To add a friend, search their email in the field below and click "Add Friend"</div>
-
-    <input type="text" name="friend" id="friend">
-    <button name="add-friend" id="add-friend">Add Friend</button>
-    <div id="friend-success"></div>
-
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
 {% endblock %}
