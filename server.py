@@ -9,6 +9,7 @@ import flickrapi
 import datetime
 import requests
 import base64
+import imghdr
 
 
 app = Flask(__name__)
@@ -177,12 +178,14 @@ def dashboard_view():
     user_favorites = []
     user_trips = []
     user_friends = []
+    user_photos = []
 
     if 'user_id' in session:
         favorites = Favorite.query.filter_by(user_id=session['user_id']).all()
         trips = Trip.query.filter_by(owner_id=session['user_id']).all()
         friends = Friend.query.filter_by(user_id=session['user_id']).all()
         user = User.query.filter_by(user_id=session['user_id']).first()
+        photos = Photo.query.filter_by(user_id=session['user_id']).all()
 
         for favorite in favorites:
             fav_site = Site.query.filter_by(site_id=favorite.site_id).first()
@@ -197,9 +200,15 @@ def dashboard_view():
             current_friend = User.query.filter_by(user_id=friend.friend_id).first()
             user_friends.append(current_friend)
 
+        for photo in photos:
+            encoded_photo = base64.b64encode(photo.photo_blob)
+            user_photos.append([encoded_photo, photo])
+
         if user.photo:
             profile_photo = base64.b64encode(user.photo) 
-            return render_template('dashboard.html', favorites=user_favorites, trips=user_trips, friends=user_friends, profile_photo=profile_photo, user=user)
+            return render_template('dashboard.html', favorites=user_favorites, trips=user_trips, friends=user_friends, profile_photo=profile_photo, 
+                                    user=user, photos=user_photos)
+
 
     return render_template('dashboard.html', favorites=user_favorites, trips=user_trips, friends=user_friends, user=user)
 
@@ -340,10 +349,21 @@ def upload_photo():
 def upload_profile_photo():
 
     file = request.files['image']
+    profile_photo = file.read()
 
-    user = User.query.filter_by(user_id=session['user_id']).first()
-    user.photo = file.read()
-    db.session.commit()
+    supported_types = ['jpeg', 'png']
+    file_type = imghdr.what(None, profile_photo)
+
+    print file_type
+
+    if file_type in supported_types:
+
+        user = User.query.filter_by(user_id=session['user_id']).first()
+        user.photo = profile_photo
+        db.session.commit()
+
+    else:
+        print "invalid type"
 
     return redirect('/dashboard')
 
@@ -360,6 +380,9 @@ def post_comment():
 
     db.session.add(new_comment)
     db.session.commit()
+
+    #get the user's profile photo and base64 encode it
+    #send the comment and photo in a JSON
 
     return "Thanks for your comment"
 
