@@ -1,10 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Trip Details:</h2>
-<img src="{{trip.site.thumbnail}}">
-<div>Site name: <a href="/sites/{{trip.site_id}}">{{trip.site.name}}</a></div>
-<div>Date: {{trip.date.strftime("%A, %B %d")}}</div>
-<div>Organizer: {{trip.users.fname}} {{trip.users.lname}}</div>
 
     {% if trip.trip_attendees %}
     <div>Attendees: {{trip.trip_attendees[0].users.fname}} {{trip.trip_attendees[0].users.lname}}</div>
@@ -14,10 +9,8 @@
 
 <div id="success-message"></div>
 
-<iframe id="forecast_embed" frameborder="0" height="245" width="100%" src="https://forecast.io/embed/#lat={{trip.site.lat}}&lon={{trip.site.lng}}&name={{trip.site.name}}"></iframe>
 
-
-<div id="map"></div>
+<!-- <div id="map"></div>
     <script>
       function initMap() {
         var uluru = {lat: {{trip.site.lat}}, lng: {{trip.site.lng}}};
@@ -34,34 +27,185 @@
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap">
-    </script>
+    </script> -->
 
 
 
-<!-- <script type="text/javascript">
+  <!-- Page Content -->
+    <div class="container">
 
-    function showCancelSuccess(result){
-        $('#success-message').text(result);
-    }
-    
+      <div class="row">
 
-    function cancelTrip(evt){
-        evt.preventDefault(); 
-        window.alert("Are you sure you want to cancel this trip?"); 
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
 
-        var formInput = {
-          'path' : window.location.pathname.slice(14)
-        }
+          <!-- Title -->
+          <h1 class="mt-4">Trip Details</h1>
 
-        $.post('/cancel-trip',
-              formInput, 
-              showCancelSuccess);
+          <!-- Date -->
+          <p class="lead">
+            <a href="/sites/{{trip.site_id}}">{{trip.site.name}}</a>
+            <br>
+            Date: {{trip.date.strftime("%A, %B %d")}}
+          </p>
 
-    }
+          <hr>
+
+          <!-- Organizer -->
+          <p>Organizer: {{trip.users.fname}} {{trip.users.lname}}</p>
+
+          <hr>
+
+          <!-- Preview Image -->
+          <img src="{{photos[0].attrib['url_l']}}" class="trip-details-img">
+
+          <hr>
+
+          <!-- Post Content -->
+          <p class="lead">
+            <iframe id="forecast_embed" frameborder="0" height="245" width="100%" src="https://forecast.io/embed/#lat={{trip.site.lat}}&lon={{trip.site.lng}}&name={{trip.site.name}}"></iframe></p>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
+
+          <blockquote class="blockquote">
+            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+            <footer class="blockquote-footer">Someone famous in
+              <cite title="Source Title">Source Title</cite>
+            </footer>
+          </blockquote>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
+
+          <hr>
+
+          <!-- Comments Form -->
+          <div class="card my-4">
+            <h5 class="card-header">Leave a Comment:</h5>
+            <div class="card-body">
+              <form>
+                <div class="form-group">
+                  <textarea class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Single Comment -->
+          <div class="media mb-4">
+            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+            <div class="media-body">
+              <h5 class="mt-0">Commenter Name</h5>
+              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            </div>
+          </div>
+
+          <!-- Comment with nested comments -->
+          <div class="media mb-4">
+            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+            <div class="media-body">
+              <h5 class="mt-0">Commenter Name</h5>
+              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+
+              <div class="media mt-4">
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                <div class="media-body">
+                  <h5 class="mt-0">Commenter Name</h5>
+                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                </div>
+              </div>
+
+              <div class="media mt-4">
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                <div class="media-body">
+                  <h5 class="mt-0">Commenter Name</h5>
+                  Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+          <!-- Search Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Search</h5>
+            <div class="card-body">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Categories Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Location</h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6">
 
 
-    $("#cancel-trip").on("click", cancelTrip);
-</script> -->
+                  <div id="map" class="trip-details"></div>
+                      <script>
+                        function initMap() {
+                          var uluru = {lat: {{trip.site.lat}}, lng: {{trip.site.lng}}};
+                          var map = new google.maps.Map(document.getElementById('map'), {
+                            zoom: 12,
+                            center: uluru
+                          });
+                          var marker = new google.maps.Marker({
+                            position: uluru,
+                            map: map
+                          });
+                        }
+                       
+                      </script>
+                      <script async defer
+                      src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap">
+                      </script>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Side Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Side Widget</h5>
+            <div class="card-body">
+              You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+
+
+
 
 
 

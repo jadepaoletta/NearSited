@@ -317,7 +317,9 @@ def trip_details(trip_id):
 
     trip = Trip.query.filter_by(trip_id=trip_id).first()
 
-    return render_template('trip-details.html', trip=trip, api_key=GOOGLE_API_KEY)
+    flickr_photos = get_site_photos(trip.site)
+
+    return render_template('trip-details.html', trip=trip, api_key=GOOGLE_API_KEY, photos=flickr_photos)
 
 
 @app.route('/confirm-trip/<trip_id>/<user_id>')

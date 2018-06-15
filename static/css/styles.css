@@ -36,6 +36,13 @@
     margin: 2%;
 }
 
+#map.trip-details {
+    height: 300px;
+    width: 300px;
+    margin: 2%;
+}
+
+
 #favorite-site{
     margin: 2%;
 }
@@ -91,6 +98,18 @@ body{
     background-position: 50% 50%;
     background-repeat:   no-repeat;
     background-size:     cover;
+}
+
+.trip-details-img{
+    width: 650px;
+}
+
+.logo-img{
+    width: 150px;
+}
+
+.logo-home{
+    width: 500px;
 }
 
 
