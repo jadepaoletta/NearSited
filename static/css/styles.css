@@ -112,4 +112,27 @@ body{
     width: 500px;
 }
 
+.form-center{
+    display: block !important;
+    margin-top: 6%;
+}
+
+.btn-outline-success {
+    color: white;
+    background-color: #28a745;
+    background-image: none;
+    border-color: #28a745;
+}
+
+.btn-outline-success:hover {
+    color: #28a745;
+    background-color: transparent;
+    background-image: none;
+    border-color: #28a745;
+}
+.index-body{
+    background-image: url("../images/golden-gate3.2.jpg");
+    background-size:cover;
+    background-repeat: no-repeat;
+}
 

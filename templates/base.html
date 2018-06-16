@@ -11,10 +11,10 @@
 
 
 </head>
-<body>
+<body {% if index_page %} class="index-body" {% endif %}>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="/"><img src="static/images/logo.png" class="logo-img"></a>
+      <a class="navbar-brand" href="/"><img src="../static/images/logo.png" class="logo-img"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -30,18 +30,26 @@
           <li class="nav-item active">
             <a class="nav-link" href="/register">Register <span class="sr-only">(current)</span></a>
           </li>
+          {%if 'user_id' not in session %}
           <li class="nav-item active">
             <a class="nav-link" href="/login">Login <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
+          {% endif %}
+          {%if 'user_id' in session %}
+          <li class="nav-item active">
             <a class="nav-link" href="/logout">Logout</a>
           </li>
+          {% endif %}
 
         </ul>
+        {% if not index_page %}
         <form class="form-inline my-2 my-lg-0" action="/sites">
           <input class="form-control mr-sm-2" type="search" placeholder="Enter your destination" name="search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Explore</button>
         </form>
+        {% endif %}
+
+
       </div>
     </nav>
     {% with messages = get_flashed_messages() %}

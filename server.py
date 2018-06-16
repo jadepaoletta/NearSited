@@ -28,7 +28,9 @@ flickr = flickrapi.FlickrAPI(FLICKR_API_KEY, FLICKR_API_SECRET)
 def index():
     """Homepage"""
 
-    return render_template("index.html")
+    index_page = True
+
+    return render_template("index.html", index_page=index_page)
 
 
 @app.route('/login')
