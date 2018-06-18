@@ -122,3 +122,17 @@ function cancelTrip(evt){
 
 
 $("#cancel-trip").on("click", cancelTrip);
+
+//submit photo
+
+
+function submitForm(){
+    $('#image-form').submit();
+ }
+
+
+function filePicker(evt){
+  $('#image').click();
+}
+
+$('.fa-upload').on("click", filePicker);

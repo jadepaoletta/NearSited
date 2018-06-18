@@ -86,6 +86,11 @@ body{
     border-radius: 50%;
 }
 
+.rounded-circle{
+    height: 50px;
+    width: 50px;
+}
+
 #map.sites-page{
     margin-left: 37%;
 }
@@ -135,4 +140,21 @@ body{
     background-size:cover;
     background-repeat: no-repeat;
 }
+.far.fa-heart{
+    font-size: 30px;
+}
+#image{
+    display: none;
+}
 
+.trip-scheduler{
+    width: 85%;
+}
+
+.fas.fa-upload{
+    font-size: 30px;
+}
+
+.profile-upload{
+    margin-left: 20%;
+}

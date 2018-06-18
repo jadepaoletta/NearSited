@@ -19,13 +19,17 @@
             {% if profile_photo %}
                 <img src="data:image/png;base64,{{profile_photo}}" id="profile-photo">
             {% endif %}
-            <form method="post" enctype="multipart/form-data" action="/upload-profile-photo">
-                <input type="file" name="image" id="image" accept="image/png,image/jpeg">
-                <input type="submit" value="Upload a Profile Photo" id="image-submit">
+            <form method="post" enctype="multipart/form-data" action="/upload-profile-photo" id="image-form">
+                <input type="file" name="image" id="image" accept="image/png,image/jpeg" onchange="submitForm()">
+                <div class="profile-upload">Upload Profile Photo <i class="fas fa-upload"></i>
+                </div>
             </form>
-            <div>{{user.fname}} {{user.lname}}</div>
-            <div>{{user.email}}</div>
-            <div>{{user.phone}}</div>
+            <br>
+            <div class="profile-info">
+                <div>Name: {{user.fname}} {{user.lname}}</div>
+                <div>Email: {{user.email}}</div>
+                <div>Phone: {{user.phone}}</div>
+            </div>
             </div>
           </div>
 
