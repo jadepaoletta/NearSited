@@ -81,27 +81,30 @@
         <div class="card my-4">
           <h5 class="card-header">Leave a Comment:</h5>
           <div class="card-body">
-            <form>
+            
               <div class="form-group">
                 <textarea class="form-control" rows="3" id="comment"></textarea>
               </div>
               <button type="submit" id="comment-submit" class="btn btn-primary">Submit</button>
-            </form>
+            
           </div>
         </div>
 
         <!-- Single Comment -->
-        {% if comments %}
-        {% for comment in comments %}
-        <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" src="data:image/png;base64,{{comment[0]}}" alt="">
-          <div class="media-body">
-            <h5 class="mt-0">{{comment[1].user.fname}} {{comment[1].user.lname}}</h5>
-            {{comment[1].comment_string}}
+        <div id="comment-section">
+          {% if comments %}
+          {% for comment in comments %}
+          <div class="media mb-4">
+            <img class="d-flex mr-3 rounded-circle" src="data:image/png;base64,{{comment[0]}}" alt="">
+            <div class="media-body">
+              <h5 class="mt-0">{{comment[1].user.fname}} {{comment[1].user.lname}}</h5>
+              {{comment[1].comment_string}}
+            </div>
           </div>
+          {% endfor %}
+          {% endif %}
+        
         </div>
-        {% endfor %}
-        {% endif %}
       </div>
 
 
@@ -196,7 +199,7 @@
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+        <p class="m-0 text-center text-white">Copyright &copy; NearSited 2018</p>
       </div>
       <!-- /.container -->
     </footer>

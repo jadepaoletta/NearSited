@@ -78,6 +78,19 @@ function getAttendeeEmails(){
 
 function showCommentSuccess(result){
   console.log(result);
+  var div = $('<div class="media mb-4 yessir"> </div>');
+  var img = $('<img class="d-flex mr-3 rounded-circle" src="data:image/png;base64,'+ result.profile_photo + '" alt="">');
+  var div2 = $('<div class="media-body"> </div>');
+  var comment_names = $('<h5 class="mt-0">' + result.commenter_fname + ' ' + result.commenter_lname +'</h5>');
+  var comment_string = $('<div>' + result.comment+ '</div>');
+  $(div).append(img);
+  $(div2).append(comment_names);
+  $(div2).append(comment_string);
+  $(div).append(div2);
+
+  $('#comment-section').append(div);
+
+
 }
 
 

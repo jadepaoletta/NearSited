@@ -387,8 +387,11 @@ def post_comment():
 
     #get the user's profile photo and base64 encode it
     #send the comment and photo in a JSON
+    profile_photo = base64.b64encode(new_comment.user.photo)
 
-    return "Thanks for your comment"
+    success = {'comment':new_comment.comment_string, "commenter_fname" :new_comment.user.fname, "commenter_lname": new_comment.user.lname, "profile_photo": profile_photo}
+
+    return jsonify(success)
 
 
 
