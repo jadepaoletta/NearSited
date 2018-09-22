@@ -177,6 +177,8 @@ def user_profile(user_id):
 def dashboard_view():
     """Returns the page to add a friend"""
 
+    print "small change"
+
     user_favorites = []
     user_trips = []
     user_friends = []
