@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleControls" class="carousel slide" data-interval="false" data-ride="carousel">
       <div class="carousel-inner">
         {%for photo in photos %}
           <div class="carousel-item {% if loop.index == 1 %} active{% endif %}">
@@ -48,7 +48,7 @@
       <div id="success-message" class="alert-success"></div>
       {% endif %}
 
-      <form method="post" enctype="multipart/form-data" action="/upload-photo">
+      <form method="post" enctype="multipart/form-data" action="/upload-photo" id="image-form">
         <input type="hidden" id="site_id" name="site_id" value="{{place.site_id}}">
         <input type="file" name="image" id="image" accept="image/png,image/jpeg" onchange="submitForm()">
       </form>
@@ -128,7 +128,7 @@
                 </script>
 
                 <br>
-                <div id="trip-success" class="alert-success"></div>
+                
                 <div id="attendees">
                   <div>Invite Friends:</div>
                   <select class="mdb-select" multiple>
@@ -140,6 +140,7 @@
                 <label for="exampleFormControlTextarea1">Send a message to attendees (optional):</label>
                 <textarea class="form-control" rows="3" id="message"></textarea>
                 <button id="trip-submit" type="submit" name="submit" class="btn btn-primary">Submit</button>
+                <div id="trip-success" class="alert-success"></div>
             </div>
           </div>
         </div>
@@ -206,8 +207,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
-    // $('.carousel').carousel({interval: 4000});
-    // $('.carousel').carousel('cycle');
+    $('.carousel').carousel('pause');
 </script>
 
 
