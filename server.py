@@ -103,8 +103,6 @@ def register_process():
 def sites_list():
     """Return list of sites based on the location the user searched for."""
 
-    print "hi"
-
     user_location = request.args.get('search')
     places = search_by_text(user_location)
 
@@ -178,8 +176,6 @@ def user_profile(user_id):
 @app.route('/dashboard' )
 def dashboard_view():
     """Returns the page to add a friend"""
-
-    print "hi"
 
     user_favorites = []
     user_trips = []
